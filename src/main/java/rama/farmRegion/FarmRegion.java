@@ -4,12 +4,16 @@ import org.bukkit.*;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import rama.farmRegion.commands.CreateRegion;
 import rama.farmRegion.commands.Tool;
+import rama.farmRegion.regionManager.RegionType;
+
+import java.util.ArrayList;
 
 
 public final class FarmRegion extends JavaPlugin {
 
-    static Plugin plugin;
+    public static Plugin plugin;
 
     @Override
     public void onEnable() {
@@ -35,12 +39,17 @@ public final class FarmRegion extends JavaPlugin {
         TabExecutor toolTabExecuter = new Tool();
         plugin.getCommand("fr").setExecutor(toolTabExecuter);
         plugin.getCommand("fr").setTabCompleter(toolTabExecuter);
+
+        TabExecutor createRegionExecutor = new CreateRegion();
+        plugin.getCommand("fr").setExecutor(createRegionExecutor);
+        plugin.getCommand("fr").setTabCompleter(createRegionExecutor);
     }
 
     public void registerEvents(){
         sendDebug("&eRegistering events...");
         getServer().getPluginManager().registerEvents(new ToolListener(), this);
     }
+
 
     /*
     public void blockBreak(BlockBreakEvent e){
