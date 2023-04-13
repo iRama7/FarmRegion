@@ -1,0 +1,9 @@
+name: FarmRegion
+version: '${project.version}'
+main: rama.farmRegion.FarmRegion
+api-version: 1.19
+authors: [ ImRama ]
+description: Create automatic farm regions for your players.
+commands:
+  fr:
+    aliases: ["farmregion"]

@@ -1,0 +1,13 @@
+config:
+regions:
+  #1:
+    #break_block:
+      #material:
+      #age:
+    #replace_block:
+      #material:
+      #age:
+    #region:
+      #point_1:
+      #point_2:
+    #time: 0//ticks
