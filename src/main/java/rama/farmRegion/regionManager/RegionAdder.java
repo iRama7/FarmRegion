@@ -1,5 +1,6 @@
 package rama.farmRegion.regionManager;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -9,7 +10,7 @@ public class RegionAdder {
 
     private final FileConfiguration config = plugin.getConfig();
 
-    public void addRegion(RegionType type){
+    public void addRegion(RegionType type, Location p1, Location p2){
 
         int i = nextRegionInt();
 
@@ -18,6 +19,9 @@ public class RegionAdder {
 
         config.set("regions." + i + ".replant_block.material", type.replant_material.toString());
         config.set("regions." + i + ".replant_block.age", type.replant_age);
+
+        config.set("regions." + i + ".point1", p1);
+        config.set("regions." + i + ".point2", p2);
 
         config.set("regions." + i + ".time", type.time);
 

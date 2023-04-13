@@ -12,8 +12,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class ToolListener implements Listener {
 
-    Location point1;
-    Location point2;
+    public static Location point1;
+    public static Location point2;
 
     @EventHandler
     public void interactEvent(PlayerInteractEvent e){
@@ -35,14 +35,6 @@ public class ToolListener implements Listener {
             e.setCancelled(true);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eSetting second point at: &7" + point2.getX() + "&e, &7" + point2.getY() + "&e, &7" + point2.getZ() + "&e."));
         }
-    }
-
-    public Location getPoint1(){
-        return this.point1;
-    }
-
-    public Location getPoint2(){
-        return this.point2;
     }
 
 }
