@@ -40,7 +40,6 @@ public class RegionAdder {
         }
 
         plugin.saveConfig();
-        plugin.reloadConfig();
     }
 
     public Integer nextRegionInt() {

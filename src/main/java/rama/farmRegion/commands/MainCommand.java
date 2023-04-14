@@ -14,7 +14,7 @@ import rama.farmRegion.regionManager.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import static rama.farmRegion.FarmRegion.sendDebug;
+import static rama.farmRegion.FarmRegion.*;
 import static rama.farmRegion.ToolListener.point1;
 import static rama.farmRegion.ToolListener.point2;
 
@@ -64,6 +64,7 @@ public class MainCommand implements TabExecutor {
                     break;
             }
             point1 = null; point2 = null;
+            rm.loadRegions();
         }
 
         return false;

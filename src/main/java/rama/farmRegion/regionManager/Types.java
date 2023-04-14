@@ -14,7 +14,7 @@ public class Types {
         drops.add("WHEAT:2");
         drops.add("WHEAT_SEEDS:1");
 
-        return new RegionType(Material.WHEAT_SEEDS, Material.WHEAT_SEEDS, 10, 5, 10, drops);
+        return new RegionType(Material.WHEAT, Material.WHEAT, 7, 5, 10, drops);
     }
 
     public RegionType carrot(){
@@ -23,7 +23,7 @@ public class Types {
 
         drops.add("CARROT:1");
 
-        return new RegionType(Material.CARROTS, Material.CARROTS, 10, 5, 10, drops);
+        return new RegionType(Material.CARROTS, Material.CARROTS, 7, 5, 10, drops);
     }
 
 }

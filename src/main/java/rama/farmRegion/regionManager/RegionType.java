@@ -23,28 +23,4 @@ public class RegionType {
         this.break_age = break_age;
         this.drops = drops;
     }
-
-    public Material getBreak_material(){
-        return this.break_material;
-    }
-
-    public Material getReplant_material(){
-        return this.replant_material;
-    }
-
-    public int getBreak_age(){
-        return this.break_age;
-    }
-
-    public int getReplant_age(){
-        return this.replant_age;
-    }
-
-    public long getTime(){
-        return this.time;
-    }
-
-    public List<String> getItems(){
-        return this.drops;
-    }
 }

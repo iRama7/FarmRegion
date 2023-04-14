@@ -5,18 +5,23 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import rama.farmRegion.commands.MainCommand;
+import rama.farmRegion.regionManager.RegionManager;
 
 
 public final class FarmRegion extends JavaPlugin {
 
-    public static Plugin plugin;
 
+
+    public static Plugin plugin;
+    public static RegionManager rm;
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        registerCommands(this);
-        registerEvents();
         plugin = this;
+        registerCommands(this);
+        rm = new RegionManager();
+        registerEvents();
+        rm.loadRegions();
     }
 
     @Override
@@ -41,23 +46,7 @@ public final class FarmRegion extends JavaPlugin {
     public void registerEvents(){
         sendDebug("&eRegistering events...");
         getServer().getPluginManager().registerEvents(new ToolListener(), this);
+        getServer().getPluginManager().registerEvents(rm, this);
     }
 
-
-    /*
-    public void blockBreak(BlockBreakEvent e){
-        if(e.getBlock().getType() == Material.WHEAT){
-            Ageable ageable = (Ageable) e.getBlock().getBlockData();
-            int age = ageable.getAge();
-            if(age == 7) {
-                e.setCancelled(true);
-                ageable.setAge(0);
-                e.getBlock().setBlockData(ageable);
-                ItemStack wheat = new ItemStack(Material.WHEAT);
-                wheat.setAmount(1);
-                e.getPlayer().getInventory().addItem(wheat);
-            }
-        }
-    }
-     */
 }
