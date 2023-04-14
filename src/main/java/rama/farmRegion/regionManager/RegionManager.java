@@ -2,6 +2,7 @@ package rama.farmRegion.regionManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import rama.farmRegion.ParticleMain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class RegionManager implements Listener {
 
     @EventHandler
     public void event(BlockBreakEvent e){
+
+
         Location blockLocation = e.getBlock().getLocation();
 
         for(Region region : regions){

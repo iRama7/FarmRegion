@@ -3,6 +3,8 @@ package rama.farmRegion.regionManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
+import rama.farmRegion.GuardiansManager;
 
 import static rama.farmRegion.FarmRegion.plugin;
 
@@ -41,6 +43,9 @@ public class RegionAdder {
             config.set("regions." + i + ".items." + i1 + ".material", material.toString());
             config.set("regions." + i + ".items." + i1 + ".amount", amount);
         }
+
+        GuardiansManager gm = new GuardiansManager();
+        gm.summonGuardian(gm.getMiddleLocation(p1.getBlock(), p2.getBlock()), gm.createSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmE2OWMzZTE3ZmRlMjk4ODdhMzkzYzhkMmY0YmIwNTQ0YzFjNTc2ZGIwOTI1YmIwYWMxNGFjZmZhMzEyMmE2NSJ9fX0="));
 
         plugin.saveConfig();
     }
