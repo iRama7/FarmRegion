@@ -1,11 +1,10 @@
 package rama.farmRegion.regionManager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.scheduler.BukkitRunnable;
+import rama.farmRegion.ParticleMain;
 
 import static rama.farmRegion.FarmRegion.plugin;
 
@@ -20,6 +19,7 @@ public class BlockScheduler {
                 Ageable ageable = (Ageable) block.getBlockData();
                 ageable.setAge(replantAge);
                 block.setBlockData(ageable);
+                new ParticleMain().summonReplantParticle(block.getWorld(), block.getLocation());
             }
 
         },time);
