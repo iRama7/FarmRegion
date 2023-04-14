@@ -17,6 +17,9 @@ public class RegionAdder {
         config.set("regions." + i + ".break_block.material", type.break_material.toString());
         config.set("regions." + i + ".break_block.age", type.break_age);
 
+        config.set("regions." + i + ".while_replant_block.material", type.whileReplantMaterial.toString());
+        config.set("regions." + i + ".while_replant_block.age", type.whileReplantAge);
+
         config.set("regions." + i + ".replant_block.material", type.replant_material.toString());
         config.set("regions." + i + ".replant_block.age", type.replant_age);
 

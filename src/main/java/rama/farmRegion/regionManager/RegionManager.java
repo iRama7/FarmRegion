@@ -1,6 +1,5 @@
 package rama.farmRegion.regionManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -53,14 +52,23 @@ public class RegionManager implements Listener {
                     int age = ageable.getAge();
                     if(age == break_age){
 
-                        Material replant_material = Material.getMaterial(config.getString("regions." + region.number + ".replant_block.material"));
-                        int replant_age = config.getInt("regions." + region.number + ".replant_block.age");
+                        Material replantMaterial = Material.getMaterial(config.getString("regions." + region.number + ".replant_block.material"));
+                        int replantAge = config.getInt("regions." + region.number + ".replant_block.age");
+
+                        Material whileReplantMaterial = Material.getMaterial(config.getString("regions." + region.number + ".while_replant_block.material"));
+                        int whileReplantAge = config.getInt("regions." + region.number + ".while_replant_block.age");
+
+                        long time = config.getLong("regions." + region.number + ".time");
 
                         Block block = e.getBlock();
-                        block.setType(replant_material);
+                        block.setType(whileReplantMaterial);
                         Ageable ageable1 = (Ageable) block.getBlockData();
-                        ageable1.setAge(replant_age);
+                        ageable1.setAge(whileReplantAge);
                         block.setBlockData(ageable1);
+
+                        BlockScheduler bs = new BlockScheduler();
+                        bs.scheduleBlock(time, block, replantMaterial, replantAge);
+
 
                         for(String drop : config.getConfigurationSection("regions." + region.number + ".items").getKeys(false)){
                             Material material = Material.getMaterial(config.getString("regions." + region.number + ".items." + drop + ".material"));
@@ -69,8 +77,8 @@ public class RegionManager implements Listener {
                             e.getPlayer().getInventory().addItem(item);
                         }
                     }
+                    e.setCancelled(true);
                 }
-                e.setCancelled(true);
             }
         }
     }
