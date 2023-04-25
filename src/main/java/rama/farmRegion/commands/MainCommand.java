@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import rama.farmRegion.FarmRegion;
 import rama.farmRegion.ToolBuilder;
 import rama.farmRegion.regionManager.RegionAdder;
 import rama.farmRegion.regionManager.Types;
@@ -34,7 +35,17 @@ public class MainCommand implements TabExecutor {
             Player p = (Player) sender;
             ToolBuilder tb = new ToolBuilder();
             p.getInventory().addItem(tb.buildTool());
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eYou received the selection tool."));
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aYou received the selection tool."));
+        }
+
+        if(args.length == 1 && args[0].equalsIgnoreCase("reload")){
+            plugin.reloadConfig();
+            rm.unloadRegions();
+            rm.loadRegions();
+            guardiansManager.writeGuardians(guardiansConfig);
+            guardiansManager.unloadGuardians();
+            guardiansManager.retrieveGuardians(guardiansConfig);
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aReloaded config & regions!"));
         }
 
         if(args.length >= 1 && args[0].equalsIgnoreCase("addRegion")){
@@ -65,6 +76,8 @@ public class MainCommand implements TabExecutor {
             }
             point1 = null; point2 = null;
             rm.loadRegions();
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRegion added successfully!"));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eRemember to edit the config files."));
         }
 
         return false;
@@ -78,6 +91,7 @@ public class MainCommand implements TabExecutor {
             if (args.length == 1) {
                 commands.add("tool");
                 commands.add("addRegion");
+                commands.add("reload");
                 StringUtil.copyPartialMatches(args[0], commands, completions);
                 return completions;
             }

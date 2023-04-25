@@ -11,7 +11,7 @@ public class ParticleMain {
 
     FileConfiguration config = plugin.getConfig();
 
-    private final Boolean replantParticleEnabled = config.getBoolean("config.replant_particles.enable");
+    private final Boolean replantParticleEnabled = config.getBoolean("config.replant_effect.enable");
     private final Effect replantEffect = Effect.valueOf(config.getString("config.replant_effect.effect"));
 
     public void summonReplantParticle(World world, Location location){

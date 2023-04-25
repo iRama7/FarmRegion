@@ -4,6 +4,7 @@ main: rama.farmRegion.FarmRegion
 api-version: 1.19
 authors: [ ImRama ]
 description: Create automatic farm regions for your players.
+load: POSTWORLD
 commands:
   fr:
     aliases: ["farmregion"]

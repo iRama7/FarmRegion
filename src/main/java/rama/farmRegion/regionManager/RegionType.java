@@ -2,7 +2,6 @@ package rama.farmRegion.regionManager;
 
 import org.bukkit.Material;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RegionType {
@@ -16,8 +15,10 @@ public class RegionType {
     long time;
     List<String> drops;
 
+    String headValue;
 
-    public RegionType(Material break_material, Material whileReplantMaterial, Material replant_material, int break_age, int whileReplantAge, int replant_age, long time, List<String> drops){
+
+    public RegionType(Material break_material, Material whileReplantMaterial, Material replant_material, int break_age, int whileReplantAge, int replant_age, long time, List<String> drops, String headValue){
         this.replant_age = replant_age;
         this.replant_material = replant_material;
         this.time = time;
@@ -26,5 +27,6 @@ public class RegionType {
         this.drops = drops;
         this.whileReplantAge = whileReplantAge;
         this.whileReplantMaterial = whileReplantMaterial;
+        this.headValue = headValue;
     }
 }
