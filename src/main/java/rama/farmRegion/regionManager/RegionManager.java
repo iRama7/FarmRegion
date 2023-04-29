@@ -42,7 +42,7 @@ public class RegionManager implements Listener {
             Material replantMaterial = Material.getMaterial(config.getString("regions." + i + ".replant_block.material"));
             int breakAge = config.getInt("regions." + i + ".break_block.age");
             int replantAge = config.getInt("regions." + i + ".replant_block.age");
-            long time = config.getLong("regions." + i + ".time");
+            String timeString = config.getString("regions." + i + ".time");
             Set<String> dropList = config.getConfigurationSection("regions." + i + ".items").getKeys(false);
             List<String> drops = new ArrayList<>();
             for(String drop : dropList){
@@ -52,7 +52,7 @@ public class RegionManager implements Listener {
                 drops.add(dropString);
             }
             String headValue = config.getString("regions." + i + ".guardian.head-value");
-            RegionType regionType = new RegionType(break_material, whileReplantMaterial, replantMaterial, breakAge, whileReplantAge, replantAge, time, drops, headValue);
+            RegionType regionType = new RegionType(break_material, whileReplantMaterial, replantMaterial, breakAge, whileReplantAge, replantAge, timeString, drops, headValue);
             regions.add(new Region(point1, point2, Integer.parseInt(i), regionType));
             count += 1;
         }
@@ -94,7 +94,7 @@ public class RegionManager implements Listener {
                         Material whileReplantMaterial = region.regionType.whileReplantMaterial;
                         int whileReplantAge = region.regionType.whileReplantAge;
 
-                        long time = region.regionType.time;
+                        String timeString = region.regionType.timeString;
 
                         Block block = e.getBlock();
                         block.setType(whileReplantMaterial);
@@ -103,7 +103,7 @@ public class RegionManager implements Listener {
                         block.setBlockData(ageable1);
 
                         BlockScheduler bs = new BlockScheduler();
-                        bs.scheduleBlock(time, block, replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number));
+                        bs.scheduleBlock(timeString, block, replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number));
 
 
                         for(String drop : region.regionType.drops){

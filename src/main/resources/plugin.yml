@@ -1,7 +1,7 @@
 name: FarmRegion
 version: '${project.version}'
 main: rama.farmRegion.FarmRegion
-api-version: 1.19
+api-version: 1.14
 authors: [ ImRama ]
 description: Create automatic farm regions for your players.
 load: POSTWORLD

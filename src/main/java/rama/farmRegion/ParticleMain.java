@@ -29,7 +29,7 @@ public class ParticleMain {
         double length = direction.length();
         direction.normalize();
 
-        for (double i = 0; i < length; i += 1) {
+        for (double i = 0; i < length; i += 0.5) {
             Location loc = startLoc.clone().add(direction.clone().multiply(i));
             world.spawnParticle(particle, loc, particleCount, 0, 0, 0, 0);
         }

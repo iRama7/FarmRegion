@@ -24,7 +24,6 @@ public class ToolListener implements Listener {
         if(!e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', "&6&lFarmRegion &7Selection tool"))){
             return;
         }
-        Bukkit.getLogger().info(e.getAction().name());
         if(e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             point1 = e.getClickedBlock().getLocation();
             e.setCancelled(true);

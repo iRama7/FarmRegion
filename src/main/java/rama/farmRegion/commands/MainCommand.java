@@ -26,6 +26,10 @@ public class MainCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
+        if(!sender.hasPermission("fr.admin")){
+            return false;
+        }
+
         if(sender == Bukkit.getConsoleSender()){
             sendDebug("&eYou can't send this command through console.");
             return false;
@@ -71,13 +75,25 @@ public class MainCommand implements TabExecutor {
                 case "CARROT":
                     regionAdder.addRegion(type.carrot(), point1, point2);
                     break;
-                default:
+                case "BEETROOT":
+                    regionAdder.addRegion(type.beetroot(), point1, point2);
                     break;
+                case "POTATO":
+                    regionAdder.addRegion(type.potato(), point1, point2);
+                    break;
+                default:
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid type."));
+                    return false;
             }
             point1 = null; point2 = null;
             rm.loadRegions();
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRegion added successfully!"));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eRemember to edit the config files."));
+        }
+
+        if(args.length == 1 && args[0].equalsIgnoreCase("debugGuardians")){
+            guardiansManager.killArmorStandsWithName("FarmRegion-Guardian");
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eTrying to remove guardians right now."));
         }
 
         return false;
@@ -92,6 +108,7 @@ public class MainCommand implements TabExecutor {
                 commands.add("tool");
                 commands.add("addRegion");
                 commands.add("reload");
+                commands.add("debugGuardians");
                 StringUtil.copyPartialMatches(args[0], commands, completions);
                 return completions;
             }
@@ -99,6 +116,8 @@ public class MainCommand implements TabExecutor {
                 commands.add("(Region type)");
                 commands.add("WHEAT");
                 commands.add("CARROT");
+                commands.add("POTATO");
+                commands.add("BEETROOT");
                 StringUtil.copyPartialMatches(args[1], commands, completions);
                 return completions;
             }

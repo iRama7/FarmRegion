@@ -31,7 +31,7 @@ public class RegionAdder {
         config.set("regions." + i + ".point1", p1);
         config.set("regions." + i + ".point2", p2);
 
-        config.set("regions." + i + ".time", type.time);
+        config.set("regions." + i + ".time", type.timeString);
 
         for(String s : type.drops){
             String[] split = s.split(":");

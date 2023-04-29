@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.mojang.authlib.GameProfile;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -30,7 +32,12 @@ public class GuardiansManager {
         double middleX = (loc1.getX() + loc2.getX()) / 2;
         double middleY = (loc1.getY() + loc2.getY()) / 2;
         double middleZ = (loc1.getZ() + loc2.getZ()) / 2;
-        return new Location(loc1.getWorld(), middleX, middleY + 5, middleZ);
+        Location middleLoc = new Location(loc1.getWorld(), middleX, middleY + 5, middleZ);
+        Block middleBlock = middleLoc.getBlock();
+        middleX = middleBlock.getLocation().getX() + 0.5;
+        middleY = middleBlock.getLocation().getY() + 0.5;
+        middleZ = middleBlock.getLocation().getZ() + 0.5;
+        return new Location(loc1.getWorld(), middleX, middleY, middleZ);
     }
 
     public ItemStack createSkull(String url) {
@@ -114,5 +121,17 @@ public class GuardiansManager {
             }
         }
     }
+
+    public void killArmorStandsWithName(String name) {
+        for (Entity entity : Bukkit.getWorlds().get(0).getEntities()) {
+            if (entity instanceof ArmorStand) {
+                ArmorStand armorStand = (ArmorStand) entity;
+                if (armorStand.getCustomName() != null && armorStand.getCustomName().equals(name)) {
+                    armorStand.remove();
+                }
+            }
+        }
+    }
+
 
 }

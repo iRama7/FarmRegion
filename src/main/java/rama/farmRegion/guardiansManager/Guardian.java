@@ -28,6 +28,8 @@ public class Guardian {
     public void summon(){
         guardian = guardianLocation.getWorld().spawn(guardianLocation, ArmorStand.class);
         guardian.getLocation().getChunk().load();
+        guardian.setCustomName("FarmRegion-Guardian");
+        guardian.setCustomNameVisible(false);
         guardian.setVisible(false);
         guardian.setSmall(true);
         guardian.setGravity(false);
