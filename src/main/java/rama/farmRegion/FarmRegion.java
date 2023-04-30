@@ -33,8 +33,8 @@ public final class FarmRegion extends JavaPlugin {
         registerCommands(this);
         createCustomConfig();
         rm = new RegionManager();
-        registerEvents();
         rm.loadRegions();
+        registerEvents();
         guardiansManager = new GuardiansManager();
         guardiansManager.retrieveGuardians(guardiansConfig);
     }
@@ -72,6 +72,7 @@ public final class FarmRegion extends JavaPlugin {
 
 
     private void createCustomConfig() {
+        sendDebug("&eLoading guardians config...");
         guardiansFile = new File(getDataFolder(), "guardians.yml");
         if (!guardiansFile.exists()) {
             guardiansFile.getParentFile().mkdirs();

@@ -1,21 +1,24 @@
 package rama.farmRegion.regionManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import rama.farmRegion.ParticleMain;
+import org.bukkit.material.CocoaPlant;
+import org.bukkit.material.MaterialData;
 import rama.farmRegion.guardiansManager.GuardiansManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import static rama.farmRegion.FarmRegion.plugin;
@@ -24,6 +27,7 @@ import static rama.farmRegion.FarmRegion.sendDebug;
 public class RegionManager implements Listener {
 
     List<Region> regions = new ArrayList<>();
+    Random r = new Random();
 
     public void loadRegions(){
         sendDebug("&eLoading regions...");
@@ -43,13 +47,17 @@ public class RegionManager implements Listener {
             int breakAge = config.getInt("regions." + i + ".break_block.age");
             int replantAge = config.getInt("regions." + i + ".replant_block.age");
             String timeString = config.getString("regions." + i + ".time");
-            Set<String> dropList = config.getConfigurationSection("regions." + i + ".items").getKeys(false);
+            Set<String> dropList;
             List<String> drops = new ArrayList<>();
-            for(String drop : dropList){
-                String material = config.getString("regions." + i + ".items." + drop + ".material");
-                int amount = config.getInt("regions." + i + ".items." + drop + ".amount");
-                String dropString = material + ":" + amount;
-                drops.add(dropString);
+            if(config.getConfigurationSection("regions." + i + ".items") != null) {
+                dropList = config.getConfigurationSection("regions." + i + ".items").getKeys(false);
+                for(String drop : dropList){
+                    String material = config.getString("regions." + i + ".items." + drop + ".material");
+                    int amount = config.getInt("regions." + i + ".items." + drop + ".amount");
+                    int chance = config.getInt("regions." + i + ".items." + drop + ".chance");
+                    String dropString = material + ":" + amount + ":" + chance;
+                    drops.add(dropString);
+                }
             }
             String headValue = config.getString("regions." + i + ".guardian.head-value");
             RegionType regionType = new RegionType(break_material, whileReplantMaterial, replantMaterial, breakAge, whileReplantAge, replantAge, timeString, drops, headValue);
@@ -74,7 +82,6 @@ public class RegionManager implements Listener {
     @EventHandler
     public void event(BlockBreakEvent e){
 
-
         Location blockLocation = e.getBlock().getLocation();
 
         for(Region region : regions){
@@ -84,6 +91,7 @@ public class RegionManager implements Listener {
                 int break_age = region.regionType.break_age;
 
                 if(e.getBlock().getType().equals(break_material)){
+
                     Ageable ageable = (Ageable) e.getBlock().getBlockData();
                     int age = ageable.getAge();
                     if(age == break_age){
@@ -96,29 +104,73 @@ public class RegionManager implements Listener {
 
                         String timeString = region.regionType.timeString;
 
-                        Block block = e.getBlock();
-                        block.setType(whileReplantMaterial);
-                        Ageable ageable1 = (Ageable) block.getBlockData();
-                        ageable1.setAge(whileReplantAge);
-                        block.setBlockData(ageable1);
-
+                        if(region.regionType.drops.isEmpty()){
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                                changeBlock(e.getBlock(), whileReplantMaterial, whileReplantAge);
+                                BlockScheduler bs = new BlockScheduler();
+                                bs.scheduleBlock(timeString, e.getBlock(), replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number));
+                            }, 1L);
+                            e.setCancelled(false);
+                            return;
+                        }
+                        changeBlock(e.getBlock(), whileReplantMaterial, whileReplantAge);
                         BlockScheduler bs = new BlockScheduler();
-                        bs.scheduleBlock(timeString, block, replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number));
+                        bs.scheduleBlock(timeString, e.getBlock(), replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number));
 
-
-                        for(String drop : region.regionType.drops){
-                            String[] split = drop.split(":");
-                            Material material = Material.getMaterial(split[0]);
-                            int amount = Integer.parseInt(split[1]);
-                            ItemStack item = new ItemStack(material);
-                            item.setAmount(amount);
-                            e.getPlayer().getInventory().addItem(item);
+                        if(!region.regionType.drops.isEmpty()) {
+                            for (String drop : region.regionType.drops) {
+                                String[] split = drop.split(":");
+                                Material material = Material.getMaterial(split[0]);
+                                int amount = Integer.parseInt(split[1]);
+                                int chance = Integer.parseInt(split[2]);
+                                ItemStack item = new ItemStack(material);
+                                item.setAmount(amount);
+                                if(r.nextInt(101) <= chance) {
+                                    e.getPlayer().getInventory().addItem(item);
+                                }
+                            }
                         }
                     }
                     e.setCancelled(true);
                 }
             }
         }
+    }
+
+    private void changeBlock(Block block, Material whileReplantMaterial, int whileReplantAge){
+        BlockFace attachedFace = null;
+        if(block.getType() == Material.COCOA) {
+            attachedFace = ((CocoaPlant) block.getState().getData()).getAttachedFace();
+
+            switch (attachedFace) {
+                case NORTH:
+                    attachedFace = BlockFace.SOUTH;
+                    break;
+                case SOUTH:
+                    attachedFace = BlockFace.NORTH;
+                    break;
+                case EAST:
+                    attachedFace = BlockFace.WEST;
+                    break;
+                case WEST:
+                    attachedFace = BlockFace.EAST;
+                    break;
+            }
+        }
+        block.setType(whileReplantMaterial);
+        Ageable ageable1 = (Ageable) block.getBlockData();
+        ageable1.setAge(whileReplantAge);
+        block.setBlockData(ageable1);
+        if(block.getType() == Material.COCOA){
+            changeCocoaDirection(block.getState(), attachedFace);
+        }
+    }
+
+    public void changeCocoaDirection(BlockState blockState, BlockFace blockFace){
+        MaterialData materialData = blockState.getData();
+        ((CocoaPlant) materialData).setFacingDirection(blockFace);
+        blockState.setData(materialData);
+        blockState.update();
     }
 
 }

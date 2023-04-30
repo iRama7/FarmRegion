@@ -37,6 +37,7 @@ public class RegionAdder {
             String[] split = s.split(":");
             Material material = Material.getMaterial(split[0]);
             int amount = Integer.parseInt(split[1]);
+            int chance = Integer.parseInt(split[2]);
             int i1;
             if(config.getConfigurationSection("regions." + i + ".items") == null){
                 i1 = 1;
@@ -45,6 +46,7 @@ public class RegionAdder {
             }
             config.set("regions." + i + ".items." + i1 + ".material", material.toString());
             config.set("regions." + i + ".items." + i1 + ".amount", amount);
+            config.set("regions." + i + ".items." + i1 + ".chance", chance);
         }
 
 

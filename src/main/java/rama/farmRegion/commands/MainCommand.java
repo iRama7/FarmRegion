@@ -81,6 +81,9 @@ public class MainCommand implements TabExecutor {
                 case "POTATO":
                     regionAdder.addRegion(type.potato(), point1, point2);
                     break;
+                case "COCOA":
+                    regionAdder.addRegion(type.cocoa(), point1, point2);
+                    break;
                 default:
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid type."));
                     return false;
@@ -118,6 +121,7 @@ public class MainCommand implements TabExecutor {
                 commands.add("CARROT");
                 commands.add("POTATO");
                 commands.add("BEETROOT");
+                commands.add("COCOA");
                 StringUtil.copyPartialMatches(args[1], commands, completions);
                 return completions;
             }

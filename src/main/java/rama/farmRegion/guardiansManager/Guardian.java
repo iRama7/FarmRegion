@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
 import static rama.farmRegion.FarmRegion.plugin;
 
@@ -40,7 +42,8 @@ public class Guardian {
 
         new BukkitRunnable() {
             double angle = 0;
-            double increment = Math.PI / 32;
+            double y = 0;
+            double yDirection = 0.009;
 
             @Override
             public void run() {
@@ -48,17 +51,20 @@ public class Guardian {
                     this.cancel();
                     return;
                 }
+                angle += 8.2;
+                if(angle > 360){
+                    angle = 0;
+                }
+                guardian.setRotation((float) angle, 0);
 
-                double y = Math.sin(angle);
-                double x = Math.cos(angle);
-                double height = y * 0.4;
+                y += yDirection;
+                if(y > 0.13 || y < -0.13){
+                    yDirection *= -1;
+                }
+                Location location = guardian.getLocation().clone();
+                location.setY(location.getY() + y);
+                guardian.teleport(location);
 
-                guardian.teleport(guardianLocation.clone().add(0, height, 0));
-                float currentYaw = guardian.getLocation().getYaw();
-                guardian.setRotation(currentYaw + (float)(x * 125), 0);
-
-
-                angle += increment;
             }
         }.runTaskTimer(plugin, 0L, 1L);
     }
@@ -76,6 +82,6 @@ public class Guardian {
     }
 
     public Location getGuardianLocation(){
-        return this.guardianLocation;
+        return guardian.getLocation();
     }
 }
