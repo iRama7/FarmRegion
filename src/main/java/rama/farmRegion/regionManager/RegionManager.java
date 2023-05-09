@@ -3,6 +3,7 @@ package rama.farmRegion.regionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -21,8 +22,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import static rama.farmRegion.FarmRegion.plugin;
-import static rama.farmRegion.FarmRegion.sendDebug;
+import static rama.farmRegion.FarmRegion.*;
 
 public class RegionManager implements Listener {
 
@@ -38,6 +38,10 @@ public class RegionManager implements Listener {
             return;
         }
         for(String i : config.getConfigurationSection("regions").getKeys(false)){
+
+            Boolean worldguardEnabled = config.getBoolean("regions." + i + ".area.worldguard.enable");
+            String regionName = config.getString("regions." + i + ".area.worldguard.region_name");
+
             Location point1 = config.getLocation("regions." + i + ".point1");
             Location point2 = config.getLocation("regions." + i + ".point2");
             Material break_material = Material.getMaterial(config.getString("regions." + i + ".break_block.material"));
@@ -61,7 +65,13 @@ public class RegionManager implements Listener {
             }
             String headValue = config.getString("regions." + i + ".guardian.head-value");
             RegionType regionType = new RegionType(break_material, whileReplantMaterial, replantMaterial, breakAge, whileReplantAge, replantAge, timeString, drops, headValue);
-            regions.add(new Region(point1, point2, Integer.parseInt(i), regionType));
+
+            if(worldguardEnabled){
+                World world = Bukkit.getWorld(config.getString("regions." + i + ".area.worldguard.world"));
+                regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, WGApi.buildRegion(regionName, world)));
+            }else {
+                regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, null));
+            }
             count += 1;
         }
         sendDebug("&aSuccessfully loaded &c" + count + " &aregions.");
@@ -85,8 +95,14 @@ public class RegionManager implements Listener {
         Location blockLocation = e.getBlock().getLocation();
 
         for(Region region : regions){
-            if(region.containsLocation(blockLocation)){
-
+            if(region.region != null){
+                if(!WGApi.locInsideRegion(blockLocation, region.region)){
+                    return;
+                }
+            }
+            if(WGApi == null && !region.containsLocation(blockLocation)){
+                return;
+            }
                 Material break_material = region.regionType.break_material;
                 int break_age = region.regionType.break_age;
 
@@ -135,7 +151,6 @@ public class RegionManager implements Listener {
                 }
             }
         }
-    }
 
     private void changeBlock(Block block, Material whileReplantMaterial, int whileReplantAge){
         BlockFace attachedFace = null;

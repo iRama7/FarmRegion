@@ -1,5 +1,6 @@
 package rama.farmRegion.regionManager;
 
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Location;
 
 public class Region {
@@ -7,15 +8,16 @@ public class Region {
     Location point1;
     Location point2;
     int number;
-
+    ProtectedRegion region;
     RegionType regionType;
 
 
-    public Region(Location point1, Location point2, int number, RegionType regionType){
+    public Region(Location point1, Location point2, int number, RegionType regionType, ProtectedRegion region){
         this.point1 = point1;
         this.point2 = point2;
         this.number = number;
         this.regionType = regionType;
+        this.region = region;
     }
 
     public Boolean containsLocation(Location blockLocation){

@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import rama.farmRegion.WGApi.WorldGuardApi;
 import rama.farmRegion.commands.MainCommand;
 import rama.farmRegion.guardiansManager.GuardiansManager;
 import rama.farmRegion.regionManager.RegionManager;
@@ -21,6 +22,8 @@ public final class FarmRegion extends JavaPlugin {
 
     public static Plugin plugin;
     public static RegionManager rm;
+    public static WorldGuardApi WGApi;
+
 
     private File guardiansFile;
     public static FileConfiguration guardiansConfig;
@@ -32,11 +35,23 @@ public final class FarmRegion extends JavaPlugin {
         plugin = this;
         registerCommands(this);
         createCustomConfig();
+        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null){
+            sendDebug("&eEnabling WorldGuard support...");
+            WGApi = new WorldGuardApi();
+        }
         rm = new RegionManager();
         rm.loadRegions();
         registerEvents();
         guardiansManager = new GuardiansManager();
         guardiansManager.retrieveGuardians(guardiansConfig);
+
+        new UpdateChecker(this, 109500).getVersion(version -> {
+            if (this.getDescription().getVersion().equals(version)) {
+                sendDebug("&aYou are running the latest version.");
+            } else {
+                sendDebug("&eThere is a new update available.");
+            }
+        });
     }
 
     @Override

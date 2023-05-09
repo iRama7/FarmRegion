@@ -54,44 +54,82 @@ public class MainCommand implements TabExecutor {
 
         if(args.length >= 1 && args[0].equalsIgnoreCase("addRegion")){
 
-            if(args.length != 2){
+            if(args.length != 3){
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou are missing arguments!"));
                 return false;
             }
 
-            if(point1 == null || point2 == null){
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cMake sure to select some points first!"));
-                return false;
-            }
-
-            // /fr addRegion (Type)
-            region_type = args[1];
-            RegionAdder regionAdder = new RegionAdder();
-            Types type = new Types();
-            switch (region_type){
-                case "WHEAT":
-                    regionAdder.addRegion(type.wheat(), point1, point2);
-                    break;
-                case "CARROT":
-                    regionAdder.addRegion(type.carrot(), point1, point2);
-                    break;
-                case "BEETROOT":
-                    regionAdder.addRegion(type.beetroot(), point1, point2);
-                    break;
-                case "POTATO":
-                    regionAdder.addRegion(type.potato(), point1, point2);
-                    break;
-                case "COCOA":
-                    regionAdder.addRegion(type.cocoa(), point1, point2);
-                    break;
-                default:
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid type."));
+                if(WGApi == null && !args[2].equals("Disable")){
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lERROR &cWorldGuard support is disabled!"));
                     return false;
+                }else{
+
+                    if(args[2].equals("Disable")){
+
+
+                        if(point1 == null || point2 == null){
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cMake sure to select some points first!"));
+                            return false;
+                        }
+
+                        // /fr addRegion (Type) (WGRegion)
+                        region_type = args[1];
+                        RegionAdder regionAdder = new RegionAdder();
+                        Types type = new Types();
+                        switch (region_type){
+                            case "WHEAT":
+                                regionAdder.addRegion(type.wheat(), point1, point2);
+                                break;
+                            case "CARROT":
+                                regionAdder.addRegion(type.carrot(), point1, point2);
+                                break;
+                            case "BEETROOT":
+                                regionAdder.addRegion(type.beetroot(), point1, point2);
+                                break;
+                            case "POTATO":
+                                regionAdder.addRegion(type.potato(), point1, point2);
+                                break;
+                            case "COCOA":
+                                regionAdder.addRegion(type.cocoa(), point1, point2);
+                                break;
+                            default:
+                                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid type."));
+                                return false;
+                        }
+                        point1 = null; point2 = null;
+                        rm.loadRegions();
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRegion added successfully!"));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eRemember to edit the config files."));
+                }else{
+                        region_type = args[1];
+                        String region_name = args[2];
+                        RegionAdder regionAdder = new RegionAdder();
+                        Types type = new Types();
+                        switch (region_type){
+                            case "WHEAT":
+                                regionAdder.addWGRegion(type.wheat(), region_name, ((Player) sender).getWorld());
+                                break;
+                            case "CARROT":
+                                regionAdder.addWGRegion(type.carrot(), region_name, ((Player) sender).getWorld());
+                                break;
+                            case "BEETROOT":
+                                regionAdder.addWGRegion(type.beetroot(), region_name, ((Player) sender).getWorld());
+                                break;
+                            case "POTATO":
+                                regionAdder.addWGRegion(type.potato(), region_name, ((Player) sender).getWorld());
+                                break;
+                            case "COCOA":
+                                regionAdder.addWGRegion(type.cocoa(), region_name, ((Player) sender).getWorld());
+                                break;
+                            default:
+                                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid type."));
+                                return false;
+                        }
+                        rm.loadRegions();
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRegion added successfully!"));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eRemember to edit the config files."));
+                    }
             }
-            point1 = null; point2 = null;
-            rm.loadRegions();
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRegion added successfully!"));
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eRemember to edit the config files."));
         }
 
         if(args.length == 1 && args[0].equalsIgnoreCase("debugGuardians")){
@@ -123,6 +161,12 @@ public class MainCommand implements TabExecutor {
                 commands.add("BEETROOT");
                 commands.add("COCOA");
                 StringUtil.copyPartialMatches(args[1], commands, completions);
+                return completions;
+            }
+            if (args.length == 3 && args[0].equalsIgnoreCase("addRegion")) {
+                commands.add("Disable");
+                commands.addAll(WGApi.getRegions(((Player) sender).getWorld()));
+                StringUtil.copyPartialMatches(args[2], commands, completions);
                 return completions;
             }
         }
