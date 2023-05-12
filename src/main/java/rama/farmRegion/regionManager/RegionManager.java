@@ -42,8 +42,8 @@ public class RegionManager implements Listener {
             Boolean worldguardEnabled = config.getBoolean("regions." + i + ".area.worldguard.enable");
             String regionName = config.getString("regions." + i + ".area.worldguard.region_name");
 
-            Location point1 = config.getLocation("regions." + i + ".point1");
-            Location point2 = config.getLocation("regions." + i + ".point2");
+            Location point1 = config.getLocation("regions." + i + ".area.point1");
+            Location point2 = config.getLocation("regions." + i + ".area.point2");
             Material break_material = Material.getMaterial(config.getString("regions." + i + ".break_block.material"));
             Material whileReplantMaterial = Material.getMaterial(config.getString("regions." + i + ".while_replant_block.material"));
             int whileReplantAge = config.getInt("regions." + i + ".while_replant_block.age");

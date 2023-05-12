@@ -165,7 +165,9 @@ public class MainCommand implements TabExecutor {
             }
             if (args.length == 3 && args[0].equalsIgnoreCase("addRegion")) {
                 commands.add("Disable");
-                commands.addAll(WGApi.getRegions(((Player) sender).getWorld()));
+                if(WGApi != null) {
+                    commands.addAll(WGApi.getRegions(((Player) sender).getWorld()));
+                }
                 StringUtil.copyPartialMatches(args[2], commands, completions);
                 return completions;
             }
