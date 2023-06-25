@@ -1,4 +1,5 @@
 config:
+  worldguard: false
   replant_effect:
     enable: true
     effect: BONE_MEAL_USE #https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html

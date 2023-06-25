@@ -97,11 +97,11 @@ public class RegionManager implements Listener {
         for(Region region : regions){
             if(region.region != null){
                 if(!WGApi.locInsideRegion(blockLocation, region.region)){
-                    return;
+                    continue;
                 }
             }
             if(WGApi == null && !region.containsLocation(blockLocation)){
-                return;
+                continue;
             }
                 Material break_material = region.regionType.break_material;
                 int break_age = region.regionType.break_age;

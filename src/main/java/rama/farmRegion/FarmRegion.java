@@ -29,13 +29,15 @@ public final class FarmRegion extends JavaPlugin {
     public static FileConfiguration guardiansConfig;
 
     public static GuardiansManager guardiansManager;
+
+
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
         plugin = this;
         registerCommands(this);
         createCustomConfig();
-        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null){
+        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null && this.getConfig().getBoolean("config.worldguard")){
             sendDebug("&eEnabling WorldGuard support...");
             WGApi = new WorldGuardApi();
         }
@@ -43,7 +45,12 @@ public final class FarmRegion extends JavaPlugin {
         rm.loadRegions();
         registerEvents();
         guardiansManager = new GuardiansManager();
-        guardiansManager.retrieveGuardians(guardiansConfig);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            guardiansManager.killArmorStandsWithName("FarmRegion-Guardian");
+        }, 10L);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            guardiansManager.retrieveGuardians(guardiansConfig);
+        }, 10L);
 
         new UpdateChecker(this, 109500).getVersion(version -> {
             if (this.getDescription().getVersion().equals(version)) {
@@ -63,6 +70,7 @@ public final class FarmRegion extends JavaPlugin {
             throw new RuntimeException(e);
         }
         guardiansManager.killGuardians();
+        guardiansManager.killArmorStandsWithName("FarmRegion-Guardian");
     }
 
     public static void sendDebug(String string){

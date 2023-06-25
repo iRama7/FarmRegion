@@ -1,12 +1,9 @@
 package rama.farmRegion.guardiansManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 
 import static rama.farmRegion.FarmRegion.plugin;
 
@@ -29,7 +26,7 @@ public class Guardian {
 
     public void summon(){
         guardian = guardianLocation.getWorld().spawn(guardianLocation, ArmorStand.class);
-        guardian.getLocation().getChunk().load();
+        guardian.getLocation().getChunk().setForceLoaded(true);
         guardian.setCustomName("FarmRegion-Guardian");
         guardian.setCustomNameVisible(false);
         guardian.setVisible(false);
