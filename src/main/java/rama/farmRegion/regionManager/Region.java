@@ -2,6 +2,7 @@ package rama.farmRegion.regionManager;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class Region {
 
@@ -11,13 +12,16 @@ public class Region {
     ProtectedRegion region;
     RegionType regionType;
 
+    World world;
 
-    public Region(Location point1, Location point2, int number, RegionType regionType, ProtectedRegion region){
+
+    public Region(Location point1, Location point2, int number, RegionType regionType, ProtectedRegion region, World world){
         this.point1 = point1;
         this.point2 = point2;
         this.number = number;
         this.regionType = regionType;
         this.region = region;
+        this.world = world;
     }
 
     public Boolean containsLocation(Location blockLocation){

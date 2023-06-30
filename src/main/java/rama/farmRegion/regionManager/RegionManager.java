@@ -66,11 +66,12 @@ public class RegionManager implements Listener {
             String headValue = config.getString("regions." + i + ".guardian.head-value");
             RegionType regionType = new RegionType(break_material, whileReplantMaterial, replantMaterial, breakAge, whileReplantAge, replantAge, timeString, drops, headValue);
 
+            World world = Bukkit.getWorld(config.getString("regions." + i + ".area.worldguard.world"));
+
             if(worldguardEnabled){
-                World world = Bukkit.getWorld(config.getString("regions." + i + ".area.worldguard.world"));
-                regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, WGApi.buildRegion(regionName, world)));
+                regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, WGApi.buildRegion(regionName, world), world));
             }else {
-                regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, null));
+                regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, null, world));
             }
             count += 1;
         }
@@ -96,10 +97,11 @@ public class RegionManager implements Listener {
 
         for(Region region : regions){
             if(region.region != null){
-                if(!WGApi.locInsideRegion(blockLocation, region.region)){
+                if(!WGApi.locInsideRegion(blockLocation, region.region) || !blockLocation.getWorld().getName().equals(region.world.getName())){
                     continue;
                 }
             }
+
             if(WGApi == null && !region.containsLocation(blockLocation)){
                 continue;
             }

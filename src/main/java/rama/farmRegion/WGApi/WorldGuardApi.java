@@ -21,7 +21,6 @@ public class WorldGuardApi {
 
         com.sk89q.worldedit.util.Location WGLocation = BukkitAdapter.adapt(location);
         if(region.contains(WGLocation.getBlockX(), WGLocation.getBlockY(), WGLocation.getBlockZ())){
-
             return true;
         }else {
             return false;
