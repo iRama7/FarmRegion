@@ -66,11 +66,18 @@ public class RegionManager implements Listener {
             String headValue = config.getString("regions." + i + ".guardian.head-value");
             RegionType regionType = new RegionType(break_material, whileReplantMaterial, replantMaterial, breakAge, whileReplantAge, replantAge, timeString, drops, headValue);
 
-            World world = Bukkit.getWorld(config.getString("regions." + i + ".area.worldguard.world"));
 
             if(worldguardEnabled){
-                regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, WGApi.buildRegion(regionName, world), world));
+                World world = Bukkit.getWorld(config.getString("regions." + i + ".area.worldguard.world"));
+                if(WGApi == null){
+                    sendDebug(" ");
+                    sendDebug("WorldGuard is enabled but the plugin didn't found WorldGuard installed.");
+                    sendDebug(" ");
+                }else {
+                    regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, WGApi.buildRegion(regionName, world), world));
+                }
             }else {
+                World world = point1.getWorld();
                 regions.add(new Region(point1, point2, Integer.parseInt(i), regionType, null, world));
             }
             count += 1;

@@ -21,15 +21,24 @@ public class ToolListener implements Listener {
         if(e.getItem() == null){
             return;
         }
+        if(e.getItem().getItemMeta() == null){
+            return;
+        }
         if(!e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', "&6&lFarmRegion &7Selection tool"))){
             return;
         }
         if(e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+            if(e.getClickedBlock() == null){
+                return;
+            }
             point1 = e.getClickedBlock().getLocation();
             e.setCancelled(true);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eSetting first point at: &7" + point1.getX() + "&e, &7" + point1.getY() + "&e, &7" + point1.getZ() + "&e."));
         }
         if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if(e.getClickedBlock() == null){
+                return;
+            }
             point2 = e.getClickedBlock().getLocation();
             e.setCancelled(true);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eSetting second point at: &7" + point2.getX() + "&e, &7" + point2.getY() + "&e, &7" + point2.getZ() + "&e."));

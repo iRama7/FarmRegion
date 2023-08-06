@@ -4,6 +4,7 @@ import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.mojang.authlib.GameProfile;
@@ -123,15 +124,15 @@ public class GuardiansManager {
     }
 
     public void killArmorStandsWithName(String name) {
-        for (Entity entity : Bukkit.getWorlds().get(0).getEntities()) {
-            if (entity instanceof ArmorStand) {
-                ArmorStand armorStand = (ArmorStand) entity;
-                if (armorStand.getCustomName() != null && armorStand.getCustomName().equals(name)) {
-                    armorStand.remove();
+        for(World world : Bukkit.getWorlds()){
+            for(Entity entity : world.getEntities()){
+                if(entity instanceof ArmorStand){
+                    ArmorStand armorStand = (ArmorStand) entity;
+                    if(armorStand.getCustomName() != null && armorStand.getCustomName().equals(name)){
+                        armorStand.remove();
+                    }
                 }
             }
         }
     }
-
-
 }
