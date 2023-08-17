@@ -10,6 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -97,7 +98,7 @@ public class RegionManager implements Listener {
         sendDebug("&aSuccessfully unloaded &c" + count + " &aregions.");
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void event(BlockBreakEvent e){
 
         Location blockLocation = e.getBlock().getLocation();

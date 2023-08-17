@@ -1,10 +1,10 @@
 package rama.farmRegion;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -15,7 +15,7 @@ public class ToolListener implements Listener {
     public static Location point1;
     public static Location point2;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void interactEvent(PlayerInteractEvent e){
         Player p = e.getPlayer();
         if(e.getItem() == null){
