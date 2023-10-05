@@ -12,16 +12,26 @@ public class ParticleMain {
     FileConfiguration config = plugin.getConfig();
 
     private final Boolean replantParticleEnabled = config.getBoolean("config.replant_effect.enable");
-    private final Effect replantEffect = Effect.valueOf(config.getString("config.replant_effect.effect"));
+    private Effect replantEffect;
 
     public void summonReplantParticle(World world, Location location){
-        if(!replantParticleEnabled){
+        try{
+            replantEffect = Effect.valueOf(config.getString("config.replant_effect.effect"));
+        }catch(IllegalArgumentException e) {
+            replantEffect = null;
+        }
+
+        if(!replantParticleEnabled || replantEffect == null){
             return;
         }
         world.playEffect(location, replantEffect, 10);
     }
 
     public void createParticleLine(Location startLoc, Location endLoc, Particle particle, int particleCount) {
+
+        if(particle == null){
+            return;
+        }
 
         World world = startLoc.getWorld();
 
