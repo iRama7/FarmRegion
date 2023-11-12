@@ -55,7 +55,7 @@ public class RegionAdder {
         }
 
 
-        Guardian guardian = new Guardian(guardiansManager.getMiddleLocation(p1.getBlock(), p2.getBlock()), guardiansManager.createSkull(type.headValue), i, true);
+        Guardian guardian = new Guardian(guardiansManager.getMiddleLocation(p1.getBlock(), p2.getBlock()), guardiansManager.createSkull(type.headValue), i, true, type.headValue);
         guardian.summon();
         guardiansManager.saveGuardian(guardian);
         plugin.saveConfig();
@@ -105,7 +105,7 @@ public class RegionAdder {
         ProtectedRegion region = WGApi.buildRegion(region_name, world);
         Block block1 = world.getBlockAt(region.getMaximumPoint().getX(), region.getMaximumPoint().getY(), region.getMaximumPoint().getZ());
         Block block2 = world.getBlockAt(region.getMinimumPoint().getX(), region.getMinimumPoint().getY(), region.getMinimumPoint().getZ());
-        Guardian guardian = new Guardian(guardiansManager.getMiddleLocation(block1, block2), guardiansManager.createSkull(type.headValue), i, true);
+        Guardian guardian = new Guardian(guardiansManager.getMiddleLocation(block1, block2), guardiansManager.createSkull(type.headValue), i, true, type.headValue);
         guardian.summon();
         guardiansManager.saveGuardian(guardian);
         plugin.saveConfig();

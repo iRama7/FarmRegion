@@ -1,10 +1,11 @@
 config:
   worldguard: false
+  replant_animation_delay: 2 #In ticks, 0 to disable
   replant_effect:
     enable: true
-    effect: BONE_MEAL_USE #https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+    effect: BONE_MEAL_USE #https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Effect.html
   guardian_effect:
     enable: true
-    particle: ELECTRIC_SPARK
+    particle: ELECTRIC_SPARK #https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
     count: 1
 regions:

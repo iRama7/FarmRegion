@@ -92,6 +92,9 @@ public class MainCommand implements TabExecutor {
                             case "COCOA":
                                 regionAdder.addRegion(type.cocoa(), point1, point2);
                                 break;
+                            case "NETHER WART":
+                                regionAdder.addRegion(type.netherWart(), point1, point2);
+                                break;
                             default:
                                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid type."));
                                 return false;
@@ -120,6 +123,9 @@ public class MainCommand implements TabExecutor {
                                 break;
                             case "COCOA":
                                 regionAdder.addWGRegion(type.cocoa(), region_name, ((Player) sender).getWorld());
+                                break;
+                            case "NETHER WART":
+                                regionAdder.addWGRegion(type.netherWart(), region_name, ((Player) sender).getWorld());
                                 break;
                             default:
                                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid type."));
@@ -160,6 +166,7 @@ public class MainCommand implements TabExecutor {
                 commands.add("POTATO");
                 commands.add("BEETROOT");
                 commands.add("COCOA");
+                commands.add("NETHER WART");
                 StringUtil.copyPartialMatches(args[1], commands, completions);
                 return completions;
             }

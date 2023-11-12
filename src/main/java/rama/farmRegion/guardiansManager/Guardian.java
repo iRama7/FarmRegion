@@ -15,13 +15,15 @@ public class Guardian {
     ItemStack guardianHead;
     int guardianInt;
     Boolean enabled;
+    private String base64;
 
 
-    public Guardian(Location guardianLocation, ItemStack guardianHead, int guardianInt, Boolean enabled){
+    public Guardian(Location guardianLocation, ItemStack guardianHead, int guardianInt, Boolean enabled, String base64){
         this.guardianHead = guardianHead;
         this.guardianLocation = guardianLocation;
         this.guardianInt = guardianInt;
         this.enabled = enabled;
+        this.base64 = base64;
     }
 
     public void summon(){
@@ -80,5 +82,9 @@ public class Guardian {
 
     public Location getGuardianLocation(){
         return guardian.getLocation();
+    }
+
+    public String getBase64() {
+        return base64;
     }
 }

@@ -43,11 +43,12 @@ public class GuardiansManager {
 
     public ItemStack createSkull(String url) {
         ItemStack head = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) 3);
-        if (url.isEmpty())
+        if (url == null || url.isEmpty()) {
             return head;
+        }
 
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "Farm Region");
 
         profile.getProperties().put("textures", new Property("textures", url));
 
@@ -73,7 +74,7 @@ public class GuardiansManager {
                 return;
             }
             guardiansConfig.set("guardians." + guardian.guardianInt + ".location", guardian.guardianLocation);
-            guardiansConfig.set("guardians." + guardian.guardianInt + ".head", createSkull(plugin.getConfig().getString("regions." + guardian.guardianInt + ".guardian.head-value")));
+            guardiansConfig.set("guardians." + guardian.guardianInt + ".base64", guardian.getBase64());
         }
     }
 
@@ -90,9 +91,9 @@ public class GuardiansManager {
 
         for(String i : guardiansConfig.getConfigurationSection("guardians").getKeys(false)){
             l = guardiansConfig.getLocation("guardians." + i + ".location");
-            h = guardiansConfig.getItemStack("guardians." + i + ".head");
+            h = createSkull(guardiansConfig.getString("guardians." + i + ".base64"));
             Boolean enabled = plugin.getConfig().getBoolean("regions." + i + ".guardian.enable");
-            Guardian guardian = new Guardian(l, h, Integer.parseInt(i), enabled);
+            Guardian guardian = new Guardian(l, h, Integer.parseInt(i), enabled, guardiansConfig.getString("guardians." + i + ".base64"));
             if(enabled) {
                 guardian.summon();
             }
