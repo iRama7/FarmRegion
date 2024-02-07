@@ -110,4 +110,10 @@ public final class FarmRegion extends JavaPlugin {
         }
     }
 
+    public static int getServerVersion(){
+        String version = Bukkit.getServer().getBukkitVersion().split("-")[0];
+        int versionInteger = Integer.parseInt(version.replace(".", ""));
+        return versionInteger;
+    }
+
 }

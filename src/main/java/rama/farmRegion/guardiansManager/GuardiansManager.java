@@ -12,14 +12,18 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
-import static rama.farmRegion.FarmRegion.plugin;
-import static rama.farmRegion.FarmRegion.sendDebug;
+import static rama.farmRegion.FarmRegion.*;
 
 
 public class GuardiansManager {
@@ -42,6 +46,7 @@ public class GuardiansManager {
     }
 
     public ItemStack createSkull(String url) {
+        /*
         ItemStack head = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) 3);
         if (url == null || url.isEmpty()) {
             return head;
@@ -61,6 +66,43 @@ public class GuardiansManager {
             error.printStackTrace();
         }
         head.setItemMeta(headMeta);
+         */
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+        if (url == null || url.isEmpty()) {
+            return head;
+        }
+
+        if (getServerVersion() < 1201) {
+            try {
+                SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+                GameProfile profile = new GameProfile(UUID.randomUUID(), "Farm Region");
+                profile.getProperties().put("textures", new Property("textures", url));
+
+                Field profileField = headMeta.getClass().getDeclaredField("profile");
+                profileField.setAccessible(true);
+                profileField.set(headMeta, profile);
+                head.setItemMeta(headMeta);
+            } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            try {
+                PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID(), "Farm Region");
+                PlayerTextures textures = profile.getTextures();
+                url = new String(Base64.getDecoder().decode(url));
+                textures.setSkin(new URL(url.substring("{\"textures\":{\"SKIN\":{\"url\":\"".length(), url.length() - "\"}}}".length())));
+                profile.setTextures(textures);
+
+                SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+                if (skullMeta != null) {
+                    skullMeta.setOwnerProfile(profile);
+                }
+                head.setItemMeta(skullMeta);
+            } catch (MalformedURLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
         return head;
     }
 
