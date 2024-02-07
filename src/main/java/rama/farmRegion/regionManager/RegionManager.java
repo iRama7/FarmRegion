@@ -148,10 +148,13 @@ public class RegionManager implements Listener {
                                 String[] split = drop.split(":");
                                 Material material = Material.getMaterial(split[0]);
                                 int amount = Integer.parseInt(split[1]);
-                                int chance = Integer.parseInt(split[2]);
+                                double chance = Double.parseDouble(split[2]);
                                 ItemStack item = new ItemStack(material);
                                 item.setAmount(amount);
-                                if(r.nextInt(101) <= chance) {
+                                int entero = (r.nextInt(101));
+                                int decimal = (r.nextInt(10));
+                                double random = Double.parseDouble(entero + "." + decimal);
+                                if(random <= chance) {
                                     e.getPlayer().getInventory().addItem(item);
                                 }
                             }

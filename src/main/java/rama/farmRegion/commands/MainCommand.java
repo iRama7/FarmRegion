@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import rama.farmRegion.FarmRegion;
 import rama.farmRegion.ToolBuilder;
 import rama.farmRegion.regionManager.RegionAdder;
 import rama.farmRegion.regionManager.Types;
@@ -92,7 +91,7 @@ public class MainCommand implements TabExecutor {
                             case "COCOA":
                                 regionAdder.addRegion(type.cocoa(), point1, point2);
                                 break;
-                            case "NETHER WART":
+                            case "NETHER_WART":
                                 regionAdder.addRegion(type.netherWart(), point1, point2);
                                 break;
                             default:
@@ -124,7 +123,7 @@ public class MainCommand implements TabExecutor {
                             case "COCOA":
                                 regionAdder.addWGRegion(type.cocoa(), region_name, ((Player) sender).getWorld());
                                 break;
-                            case "NETHER WART":
+                            case "NETHER_WART":
                                 regionAdder.addWGRegion(type.netherWart(), region_name, ((Player) sender).getWorld());
                                 break;
                             default:
@@ -166,7 +165,7 @@ public class MainCommand implements TabExecutor {
                 commands.add("POTATO");
                 commands.add("BEETROOT");
                 commands.add("COCOA");
-                commands.add("NETHER WART");
+                commands.add("NETHER_WART");
                 StringUtil.copyPartialMatches(args[1], commands, completions);
                 return completions;
             }

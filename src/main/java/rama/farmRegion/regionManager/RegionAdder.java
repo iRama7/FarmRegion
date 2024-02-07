@@ -42,7 +42,7 @@ public class RegionAdder {
             String[] split = s.split(":");
             Material material = Material.getMaterial(split[0]);
             int amount = Integer.parseInt(split[1]);
-            int chance = Integer.parseInt(split[2]);
+            double chance = Double.parseDouble(split[2]);
             int i1;
             if(config.getConfigurationSection("regions." + i + ".items") == null){
                 i1 = 1;
