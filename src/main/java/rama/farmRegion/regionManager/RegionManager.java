@@ -8,6 +8,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Cocoa;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -168,7 +170,7 @@ public class RegionManager implements Listener {
     private void changeBlock(Block block, Material whileReplantMaterial, int whileReplantAge){
         BlockFace attachedFace = null;
         if(block.getType() == Material.COCOA) {
-            attachedFace = ((CocoaPlant) block.getState().getData()).getAttachedFace();
+            attachedFace = ((Cocoa) block.getState().getData()).getFacing();
 
             switch (attachedFace) {
                 case NORTH:
@@ -190,15 +192,14 @@ public class RegionManager implements Listener {
         ageable1.setAge(whileReplantAge);
         block.setBlockData(ageable1);
         if(block.getType() == Material.COCOA){
-            changeCocoaDirection(block.getState(), attachedFace);
+            changeCocoaDirection(block, block.getBlockData(), attachedFace);
         }
     }
 
-    public void changeCocoaDirection(BlockState blockState, BlockFace blockFace){
-        MaterialData materialData = blockState.getData();
-        ((CocoaPlant) materialData).setFacingDirection(blockFace);
-        blockState.setData(materialData);
-        blockState.update();
+    public void changeCocoaDirection(Block block, BlockData blockData, BlockFace blockFace){
+        Cocoa CocoaData = ((Cocoa) blockData);
+        CocoaData.setFacing(blockFace);
+        block.setBlockData(CocoaData);
     }
 
 }

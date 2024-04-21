@@ -7,6 +7,7 @@ import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.type.Cocoa;
 import org.bukkit.material.CocoaPlant;
 import rama.farmRegion.ParticleMain;
 import rama.farmRegion.guardiansManager.Guardian;
@@ -37,7 +38,7 @@ public class BlockScheduler {
 
             BlockFace attachedFace = null;
             if(block.getType() == Material.COCOA) {
-                attachedFace = ((CocoaPlant) block.getState().getData()).getAttachedFace();
+                attachedFace = ((Cocoa) block.getState().getData()).getFacing();
                 switch (attachedFace) {
                     case NORTH:
                         attachedFace = BlockFace.SOUTH;
@@ -68,7 +69,7 @@ public class BlockScheduler {
 
 
             if(block.getType() == Material.COCOA){
-                rm.changeCocoaDirection(block.getState(), attachedFace);
+                rm.changeCocoaDirection(block, block.getBlockData(), attachedFace);
             }
             new ParticleMain().summonReplantParticle(block.getWorld(), block.getLocation());
             if(guardian.getEnabled() && particleEnabled) {

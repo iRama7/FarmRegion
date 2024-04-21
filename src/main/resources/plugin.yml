@@ -5,10 +5,7 @@ api-version: 1.14
 authors: [ ImRama ]
 description: Create automatic farm regions for your players.
 load: POSTWORLD
-softdepend:
-  - Multiverse-Core
-  - WorldGuard
-  - UltraRegions
+softdepend: [WorldGuard, UltraRegions, Multiverse-Core]
 commands:
   fr:
     aliases: ["farmregion"]
