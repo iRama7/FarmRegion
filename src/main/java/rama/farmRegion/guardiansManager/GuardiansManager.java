@@ -75,7 +75,7 @@ public class GuardiansManager {
         if (getServerVersion() < 1201) {
             try {
                 SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-                GameProfile profile = new GameProfile(UUID.randomUUID(), "Farm Region");
+                GameProfile profile = new GameProfile(UUID.randomUUID(), "FarmRegion");
                 profile.getProperties().put("textures", new Property("textures", url));
 
                 Field profileField = headMeta.getClass().getDeclaredField("profile");
@@ -87,7 +87,7 @@ public class GuardiansManager {
             }
         } else {
             try {
-                PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID(), "Farm Region");
+                PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID(), "FarmRegion");
                 PlayerTextures textures = profile.getTextures();
                 url = new String(Base64.getDecoder().decode(url));
                 textures.setSkin(new URL(url.substring("{\"textures\":{\"SKIN\":{\"url\":\"".length(), url.length() - "\"}}}".length())));

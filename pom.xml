@@ -6,7 +6,7 @@
 
     <groupId>rama.fr</groupId>
     <artifactId>FarmRegion</artifactId>
-    <version>1.5.2-SNAPSHOT</version>
+    <version>1.5.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>FarmRegion</name>
