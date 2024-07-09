@@ -54,7 +54,7 @@ public class MainCommand implements TabExecutor {
         if(args.length >= 1 && args[0].equalsIgnoreCase("addRegion")){
 
             if(args.length != 3){
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou are missing arguments!"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cWrong arguments!"));
                 return false;
             }
 
@@ -67,7 +67,7 @@ public class MainCommand implements TabExecutor {
 
 
                         if(point1 == null || point2 == null){
-                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cMake sure to select some points first!"));
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cMake sure to select both points first!"));
                             return false;
                         }
 

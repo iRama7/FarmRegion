@@ -72,14 +72,17 @@ public class BlockScheduler {
                 rm.changeCocoaDirection(block, block.getBlockData(), attachedFace);
             }
             new ParticleMain().summonReplantParticle(block.getWorld(), block.getLocation());
-            if(guardian.getEnabled() && particleEnabled) {
-                Location cropLocation = block.getLocation();
-                cropLocation.setX(block.getLocation().getX() + 0.5);
-                cropLocation.setZ(block.getLocation().getZ() + 0.5);
-                block.getLocation().setX(block.getLocation().getX() + 0.5);
-                block.getLocation().setZ(block.getLocation().getZ() + 0.5);
-                new ParticleMain().createParticleLine(guardian.getGuardianLocation().clone().add(0, 0.4, 0), cropLocation, particle, particleCount);
+            if(guardian != null) {
+                if (guardian.getEnabled() && particleEnabled) {
+                    Location cropLocation = block.getLocation();
+                    cropLocation.setX(block.getLocation().getX() + 0.5);
+                    cropLocation.setZ(block.getLocation().getZ() + 0.5);
+                    block.getLocation().setX(block.getLocation().getX() + 0.5);
+                    block.getLocation().setZ(block.getLocation().getZ() + 0.5);
+                    new ParticleMain().createParticleLine(guardian.getGuardianLocation().clone().add(0, 0.4, 0), cropLocation, particle, particleCount);
+                }
             }
+
         },randomNum);
     }
 
