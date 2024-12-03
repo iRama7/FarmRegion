@@ -1,9 +1,6 @@
 package rama.farmRegion.regionManager;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -31,11 +28,16 @@ public class RegionManager implements Listener {
 
     List<Region> regions = new ArrayList<>();
     Random r = new Random();
+    String no_perm_message;
 
     public void loadRegions(){
         sendDebug("&eLoading regions...");
         int count = 0;
         FileConfiguration config = plugin.getConfig();
+
+        no_perm_message = config.getString("config.no_perm");
+        ChatColor.translateAlternateColorCodes('&', no_perm_message);
+
         if(config.getConfigurationSection("regions") == null){
             sendDebug("&cCouldn't find any regions.");
             return;
@@ -119,6 +121,11 @@ public class RegionManager implements Listener {
                 int break_age = region.regionType.break_age;
 
                 if(e.getBlock().getType().equals(break_material)){
+
+                    if(!e.getPlayer().hasPermission("farmregion." + break_material)){
+                        e.getPlayer().sendMessage(no_perm_message.replaceAll("%material%", break_material.toString()));
+                        return;
+                    }
 
                     Ageable ageable = (Ageable) e.getBlock().getBlockData();
                     int age = ageable.getAge();

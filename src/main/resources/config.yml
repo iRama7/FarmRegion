@@ -1,6 +1,7 @@
 config:
   worldguard: false
   replant_animation_delay: 2 #In ticks, 0 to disable
+  no_perm: "&cYou don't have permission to break %material%."
   replant_effect:
     enable: true
     effect: BONE_MEAL_USE #https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Effect.html
