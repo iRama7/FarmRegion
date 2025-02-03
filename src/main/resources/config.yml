@@ -1,5 +1,6 @@
 config:
   worldguard: false
+  disable_block_trampling: true
   replant_animation_delay: 2 #In ticks, 0 to disable
   no_perm: "&cYou don't have permission to break %material%."
   replant_effect:

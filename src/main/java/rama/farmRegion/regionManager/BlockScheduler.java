@@ -7,6 +7,7 @@ import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.FaceAttachable;
 import org.bukkit.block.data.type.Cocoa;
 import org.bukkit.material.CocoaPlant;
 import rama.farmRegion.ParticleMain;
@@ -26,35 +27,13 @@ public class BlockScheduler {
     private double replantDelay = plugin.getConfig().getDouble("config.replant_animation_delay");
 
 
-    public void scheduleBlock(String timeString, Block block, Material replantMaterial, int replantAge, Guardian guardian){
+    public void scheduleBlock(String timeString, Block block, Material replantMaterial, int replantAge, Guardian guardian, BlockFace CocoaFace){
 
         String[] split = timeString.split("-");
         long minTime = Long.parseLong(split[0]);
         long maxTime = Long.parseLong(split[1]);
         long randomNum = minTime + (long)(random.nextDouble() * (maxTime - minTime + 1));
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-
-
-
-            BlockFace attachedFace = null;
-            if(block.getType() == Material.COCOA) {
-                attachedFace = ((Cocoa) block.getState().getData()).getFacing();
-                switch (attachedFace) {
-                    case NORTH:
-                        attachedFace = BlockFace.SOUTH;
-                        break;
-                    case SOUTH:
-                        attachedFace = BlockFace.NORTH;
-                        break;
-                    case EAST:
-                        attachedFace = BlockFace.WEST;
-                        break;
-                    case WEST:
-                        attachedFace = BlockFace.EAST;
-                        break;
-                }
-            }
-
 
             block.setType(replantMaterial);
 
@@ -64,12 +43,10 @@ public class BlockScheduler {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                     ageable.setAge(finalI);
                     block.setBlockData(ageable);
+                    if(block.getType() == Material.COCOA && CocoaFace != null){
+                        rm.changeCocoaDirection(block, block.getBlockData(), CocoaFace);
+                    }
                     }, (long) (replantDelay + (replantDelay * i)));
-            }
-
-
-            if(block.getType() == Material.COCOA){
-                rm.changeCocoaDirection(block, block.getBlockData(), attachedFace);
             }
             new ParticleMain().summonReplantParticle(block.getWorld(), block.getLocation());
             if(guardian != null) {

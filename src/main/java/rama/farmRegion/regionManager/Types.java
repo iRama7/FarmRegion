@@ -49,7 +49,7 @@ public class Types {
 
         List<String> drops = new ArrayList<>();
 
-        drops.add("COCOA:1:100.0");
+        drops.add("COCOA_BEANS:1:100.0");
 
         return new RegionType(Material.COCOA, Material.COCOA, Material.COCOA, 2, 0, 1, "60-120", drops, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmE2OWMzZTE3ZmRlMjk4ODdhMzkzYzhkMmY0YmIwNTQ0YzFjNTc2ZGIwOTI1YmIwYWMxNGFjZmZhMzEyMmE2NSJ9fX0=");
     }

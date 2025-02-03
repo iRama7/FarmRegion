@@ -11,7 +11,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.MaterialData;
@@ -102,6 +104,34 @@ public class RegionManager implements Listener {
         sendDebug("&aSuccessfully unloaded &c" + count + " &aregions.");
     }
 
+    @EventHandler
+    public void blockTrampleEvent(PlayerInteractEvent event){
+
+        boolean disable_block_trampling = plugin.getConfig().getBoolean("config.disable_block_trampling", true);
+
+        if(!disable_block_trampling){
+            return;
+        }
+
+        if (event.getAction() == Action.PHYSICAL && event.getClickedBlock() != null){
+            if (event.getClickedBlock().getType().toString().equals("FARMLAND")) {
+                Location blockLocation = event.getClickedBlock().getLocation();
+                for(Region region : regions) {
+                    if (region.region != null) {
+                        if (!WGApi.locInsideRegion(blockLocation, region.region) || !blockLocation.getWorld().getName().equals(region.world.getName())) {
+                            continue;
+                        }
+                    }
+
+                    if (WGApi == null && !region.containsLocation(blockLocation)) {
+                        continue;
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
     @EventHandler (priority = EventPriority.LOWEST)
     public void event(BlockBreakEvent e){
 
@@ -124,6 +154,7 @@ public class RegionManager implements Listener {
 
                     if(!e.getPlayer().hasPermission("farmregion." + break_material)){
                         e.getPlayer().sendMessage(no_perm_message.replaceAll("%material%", break_material.toString()));
+                        e.setCancelled(true);
                         return;
                     }
 
@@ -143,14 +174,22 @@ public class RegionManager implements Listener {
                             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                 changeBlock(e.getBlock(), whileReplantMaterial, whileReplantAge);
                                 BlockScheduler bs = new BlockScheduler();
-                                bs.scheduleBlock(timeString, e.getBlock(), replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number));
+                                BlockFace CocoaFace = null;
+                                if(e.getBlock().getType() == Material.COCOA){
+                                    CocoaFace = ((Cocoa) e.getBlock().getState().getBlockData()).getFacing();
+                                }
+                                bs.scheduleBlock(timeString, e.getBlock(), replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number), CocoaFace);
                             }, 1L);
                             e.setCancelled(false);
                             return;
                         }
                         changeBlock(e.getBlock(), whileReplantMaterial, whileReplantAge);
                         BlockScheduler bs = new BlockScheduler();
-                        bs.scheduleBlock(timeString, e.getBlock(), replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number));
+                        BlockFace CocoaFace = null;
+                        if(e.getBlock().getType() == Material.COCOA){
+                            CocoaFace = ((Cocoa) e.getBlock().getState().getBlockData()).getFacing();
+                        }
+                        bs.scheduleBlock(timeString, e.getBlock(), replantMaterial, replantAge, new GuardiansManager().getRegionGuardian(region.number), CocoaFace);
 
                         if(!region.regionType.drops.isEmpty()) {
                             for (String drop : region.regionType.drops) {
@@ -177,22 +216,7 @@ public class RegionManager implements Listener {
     private void changeBlock(Block block, Material whileReplantMaterial, int whileReplantAge){
         BlockFace attachedFace = null;
         if(block.getType() == Material.COCOA) {
-            attachedFace = ((Cocoa) block.getState().getData()).getFacing();
-
-            switch (attachedFace) {
-                case NORTH:
-                    attachedFace = BlockFace.SOUTH;
-                    break;
-                case SOUTH:
-                    attachedFace = BlockFace.NORTH;
-                    break;
-                case EAST:
-                    attachedFace = BlockFace.WEST;
-                    break;
-                case WEST:
-                    attachedFace = BlockFace.EAST;
-                    break;
-            }
+            attachedFace = ((Cocoa) block.getState().getBlockData()).getFacing();
         }
         block.setType(whileReplantMaterial);
         Ageable ageable1 = (Ageable) block.getBlockData();
