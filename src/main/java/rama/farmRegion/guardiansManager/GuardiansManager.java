@@ -115,8 +115,9 @@ public class GuardiansManager {
             if(plugin.getConfig().getString("regions." + guardian.guardianInt + ".guardian.head-value") == null){
                 return;
             }
+            String headValue = plugin.getConfig().getString("regions." + guardian.guardianInt + ".guardian.head-value");
             guardiansConfig.set("guardians." + guardian.guardianInt + ".location", guardian.guardianLocation);
-            guardiansConfig.set("guardians." + guardian.guardianInt + ".base64", guardian.getBase64());
+            guardiansConfig.set("guardians." + guardian.guardianInt + ".base64", headValue);
         }
     }
 
