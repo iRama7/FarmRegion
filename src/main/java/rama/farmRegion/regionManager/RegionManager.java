@@ -170,6 +170,7 @@ public class RegionManager implements Listener {
 
                         String timeString = region.regionType.timeString;
 
+                        //NO CUSTOM DROPS
                         if(region.regionType.drops.isEmpty()){
                             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                 changeBlock(e.getBlock(), whileReplantMaterial, whileReplantAge);
@@ -183,6 +184,8 @@ public class RegionManager implements Listener {
                             e.setCancelled(false);
                             return;
                         }
+
+                        //IF CUSTOM DROPS
                         changeBlock(e.getBlock(), whileReplantMaterial, whileReplantAge);
                         BlockScheduler bs = new BlockScheduler();
                         BlockFace CocoaFace = null;
@@ -219,12 +222,16 @@ public class RegionManager implements Listener {
             attachedFace = ((Cocoa) block.getState().getBlockData()).getFacing();
         }
         block.setType(whileReplantMaterial);
-        Ageable ageable1 = (Ageable) block.getBlockData();
-        ageable1.setAge(whileReplantAge);
-        block.setBlockData(ageable1);
+
+        if(block.getType() != Material.AIR) {
+            Ageable ageable1 = (Ageable) block.getBlockData();
+            ageable1.setAge(whileReplantAge);
+            block.setBlockData(ageable1);
+        }
         if(block.getType() == Material.COCOA){
             changeCocoaDirection(block, block.getBlockData(), attachedFace);
         }
+
     }
 
     public void changeCocoaDirection(Block block, BlockData blockData, BlockFace blockFace){
